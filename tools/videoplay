@@ -1,0 +1,20 @@
+#!/bin/bash
+if ! [ -t 0 ]; # not connected to terminal, therefore piped
+then
+    filenamesfromstdin=$(cat < /dev/stdin) # Expected to be \n delimited, such as `ls' or `find' (without -print0) output
+fi
+
+originalIFS=$IFS
+IFS=$(echo -en "\n\b")
+for file in $filenamesfromstdin $@; # first stdin args, then cmd args
+do
+    tty=/dev/$(ps hotty $PPID) # get tty of parent process
+    filepath=$(realpath $file)
+    echo "Starting playback of file: $filepath"
+    #if [ $tty == "/dev/pts/?" ]; then  ## Disabled since play-wrapper script. Read more in seriesplay comments.
+    #    omxplayer -r -o hdmi "$file"
+    #else
+    omxplayer -r -o hdmi "$file" < $tty # use parent tty as stdin to maintain keyboard control
+    #fi
+done
+IFS=$originalIFS

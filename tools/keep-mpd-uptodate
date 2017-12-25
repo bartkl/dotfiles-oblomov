@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# DEPRECATED: This needs to be updated to wait for backup of music to finish,
+# so that needs not be called here and includes finishing the beets-library.db
+# transfer.
+
+inotifywait -m -e close_write ~bart/.config/beets/live/mpd-tagcache | while read line; do
+	sudo -H -u bart backup-tool music
+	service mpd restart
+done
