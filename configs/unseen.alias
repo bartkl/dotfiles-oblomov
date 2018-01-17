@@ -1,0 +1,2 @@
+alias unseen='diff <(cat ~/films-seen.txt|sort) <(l --color=never) | grep -oP "(?<=^> ).*" | grep -v srt$'
+
