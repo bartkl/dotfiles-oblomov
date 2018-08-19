@@ -9,7 +9,7 @@
 
 ### Configuration
 
-export RSYNC_PASSWORD=HIDDEN
+export RSYNC_PASSWORD=PASSWORD
 export RSYNC_PARTIAL_DIR=.rsync_partial
 
 log_filepath=/var/log/rsync.log
@@ -22,7 +22,7 @@ base_opts="--log-file=$log_filepath\
            --archive\
            --update\
            --delete"
-targets=(ALL books documents films music other photos series videos) # Note that with this way of defining an array, spaces cannot be used in target names.
+targets=(ALL books documents films music other photos series videos beets) # Note that with this way of defining an array, spaces cannot be used in target names.
 date_format='+%Y/%m/%d %H:%M'
 
 
@@ -55,6 +55,10 @@ backup_target() {
     elif [[ "$target" == videos?(/) ]]
     then
         opts="$base_opts --partial"
+    elif [[ "$target" == beets?(/) ]]
+    then
+        dest_basepath=$HOME/.config
+        opts="$base_opts --whole-file --copy-links"
     else
         echo "[`date "$date_format"`] ERROR: Unknown target name was specified." >> $log_filepath
         exit 1
