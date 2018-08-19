@@ -1,0 +1,8 @@
+[Unit]
+Description = Update MPD
+
+[Service]
+ExecStart = /usr/local/bin/update-mpd
+
+[Install]
+WantedBy = multi-user.target
