@@ -1,2 +1,1 @@
-alias unseen='diff <(cat ~/films-seen.txt|sort) <(l --color=never) | grep -oP "(?<=^> ).*" | grep -v srt$'
-
+alias unseen='diff <(cat ~/films-hidden.txt ~/films-seen.txt|sort) <(l --color=never) | grep -oP "(?<=^> ).*" | grep -v ^\@eaDir | grep -v "\.\(zip\|srt\)$"'

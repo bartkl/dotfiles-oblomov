@@ -1,6 +1,6 @@
 #!/bin/bash
 
-inotifywait -m -e close_write ~bart/.config/beets/mpd-tagcache | while read line; do
+inotifywait -m -e delete_self ~bart/.config/beets/mpd-tagcache | while read line; do
 	sudo -H -u bart backup music
 	service mpd restart
 done
