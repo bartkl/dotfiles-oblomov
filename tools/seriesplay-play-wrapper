@@ -2,4 +2,4 @@
 playcount=$1
 shift
 
-find "$@" -type f | shuf -n $playcount | videoplay
+find -L "$@" -type f | shuf -n $playcount | videoplay

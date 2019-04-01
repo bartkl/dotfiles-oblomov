@@ -39,7 +39,7 @@ fi
 #   2. Without it the videoplay loop stops after the first video file, killing the tmux pane somehow.
 #
 echo ${directories}
-tmux new-window -d -n "seriesplay" -c /volume1/series "seriesplay-play-wrapper $playcount ${directories}" 
+tmux new-window -d -n "seriesplay" -c /volume1/shows/__Library "seriesplay-play-wrapper $playcount ${directories}" 
 
 
 #TODO: Optionally update videoplay such that it renames the tmux window to the currently played series
