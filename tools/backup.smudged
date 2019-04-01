@@ -9,7 +9,7 @@
 
 ### Configuration
 
-export RSYNC_PASSWORD=sienna80
+export RSYNC_PASSWORD=XXXX
 export RSYNC_PARTIAL_DIR=.rsync_partial
 
 log_filepath=/var/log/rsync.log
@@ -22,7 +22,7 @@ base_opts="--log-file=$log_filepath\
            --archive\
            --update\
            --delete"
-targets=(ALL books documents films music other photos series shows videos beets) # Note that with this way of defining an array, spaces cannot be used in target names.
+targets=(ALL books films music other photos series shows videos beets) # Note that with this way of defining an array, spaces cannot be used in target names.
 date_format='+%Y/%m/%d %H:%M'
 
 
@@ -32,9 +32,6 @@ backup_target() {
     local target=$1 
 
     if   [[ "$target" == books?(/) ]]
-    then
-        opts="$base_opts --whole-file"
-    elif [[ "$target" == documents?(/) ]]
     then
         opts="$base_opts --whole-file"
     elif [[ "$target" == films?(/) ]]
