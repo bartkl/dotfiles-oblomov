@@ -1,12 +1,33 @@
 #!/bin/bash
 
+declare -A show_abbrevs
+show_abbrevs=( ["at"]="Adventure Time"
+               ["amdad"]="American Dad"
+               ["bat"]="Batman - The Animated Series"
+               ["fg"]="Family Guy"
+               ["fr"]="Frasier"
+               ["fut"]="Futurama"
+               ["it"]="IT Crowd"
+               ["peep"]="Peep Show"
+               ["rm"]="Rick And Morty"
+               ["rocko"]="Rocko's Modern Life"
+               ["sp"]="South Park"
+               ["sponge"]="Spongebob Squarepants"
+               ["ren"]="The Ren & Stimpy Show"
+               ["renl"]="The Ren & Stimpy Show - The Lost Episodes"
+               ["simp"]="The Simpsons" )
+
 if [ -z "$1" ] || [ "$1" == "--help" ] || [ "$1" == "-h" ]
 then
-    cat <<EOF
-usage: tv COUNT SHOW [SHOW]...
-EOF
-    exit 0
+    echo "usage: tv COUNT SHOW [SHOW]..."
+    echo -en "\n\n"
+    echo -en "Abbreviation mapping:\n"
+    for abbrev in "${!show_abbrevs[@]}"
+    do
+        printf "%-10s: %s\n" $abbrev "${show_abbrevs[$abbrev]}"
+    done
 fi
+    exit 0
 
 if ! [[ $1 =~ ^[1-9]+$ ]]
 then
@@ -18,4 +39,12 @@ playcount=$1
 shift
 
 cd /media/data/libraries/shows
-find -L "$@" -type f | shuf -n $playcount | videoplay
+
+
+shows=()
+for show_abbrev in "$@"
+do
+	shows+=("${show_abbrevs[$show_abbrev]}")
+done
+
+find -L "${shows[@]}" -type f | shuf -n $playcount | videoplay
