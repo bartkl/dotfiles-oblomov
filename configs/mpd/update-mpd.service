@@ -1,0 +1,10 @@
+[Unit]
+Description=Update MPD
+After=mpd.service
+
+[Service]
+ExecStart=/usr/local/bin/update-mpd
+WorkingDirectory=/var/lib/mpd
+
+[Install]
+WantedBy=multi-user.target

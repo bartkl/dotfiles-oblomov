@@ -1,0 +1,1 @@
+/home/bart/.dotfiles/configs/vim/.vim

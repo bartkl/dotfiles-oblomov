@@ -1,17 +1,9 @@
 #!/bin/bash
 
-if [ -n "$1" ];
-then
-	interval=$1
-else
-	interval=5
-fi
-
-while true
+inotifywait -e close_write,moved_to,create -m /var/lib/mpd |
+while read -r directory events filename
 do
-	sleep $interval  # Execute body every `$interval` seconds.
-	tagcache_changed=$(find /var/lib/mpd/tag_cache -ctime $interval)
-	if [ -z "$tagcache_changed" ];
+	if [ "$filename" = "tag_cache" ]
 	then
 		systemctl restart mpd
 	fi
