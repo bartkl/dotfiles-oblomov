@@ -1,5 +1,0 @@
-#!/bin/bash
-playcount=$1
-shift
-
-find -L "$@" -type f | shuf -n $playcount | videoplay
