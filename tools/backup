@@ -8,13 +8,11 @@
 #
 
 ### Configuration
-
-export RSYNC_PASSWORD=XXXX
 export RSYNC_PARTIAL_DIR=.rsync_partial
 
 log_filepath=/var/log/rsync.log
-daemon_host=nastynas
-module_prefix=nondsm_ # Necessary in order to match the rsyncd modules I wrote instead of those Synology DSM created based on the Shared Folders.
+host=192.168.178.23
+src_basepath=/media/data
 dest_basepath=/volume1
 base_opts="--log-file=$log_filepath\
            --itemize-changes\
@@ -22,7 +20,7 @@ base_opts="--log-file=$log_filepath\
            --archive\
            --update\
            --delete"
-targets=(ALL books films music other photos series shows videos beets) # Note that with this way of defining an array, spaces cannot be used in target names.
+targets=(ALL books films music other series shows media) # Note that with this way of defining an array, spaces cannot be used in target names.
 date_format='+%Y/%m/%d %H:%M'
 
 
@@ -43,7 +41,7 @@ backup_target() {
     elif [[ "$target" == other?(/) ]]
     then
         opts="$base_opts --whole-file"
-    elif [[ "$target" == photos?(/) ]]
+    elif [[ "$target" == media?(/) ]]
     then
         opts="$base_opts --whole-file"
     elif [[ "$target" == series?(/) ]]
@@ -52,21 +50,14 @@ backup_target() {
     elif [[ "$target" == shows?(/) ]]
     then
         opts="$base_opts --partial"
-    elif [[ "$target" == videos?(/) ]]
-    then
-        opts="$base_opts --whole-file"
-    elif [[ "$target" == beets?(/) ]]
-    then
-        dest_basepath=$HOME/.config
-        opts="$base_opts --whole-file --copy-links"
     else
         echo "[`date "$date_format"`] ERROR: Unknown target name was specified." >> $log_filepath
         exit 1
     fi
 
     echo "Running:"
-    echo rsync $opts $daemon_host::$module_prefix$target/ $dest_basepath/$target
-    rsync $opts $daemon_host::$module_prefix$target/ $dest_basepath/$target
+    echo rsync $opts $src_basepath/$target/ $host:$dest_basepath/$target
+    rsync $opts $src_basepath/$target/ $host:$dest_basepath/$target
 }
 
 backup_all() {
