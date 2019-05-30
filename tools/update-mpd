@@ -1,7 +1,18 @@
 #!/bin/bash
 
-inotifywait -m -e delete_self ~bart/.config/beets/mpd-tagcache | while read line; do
-	sudo -H -u bart backup music
-	service mpd restart
-done
+if [ -n "$1" ];
+then
+	interval=$1
+else
+	interval=5
+fi
 
+while true
+do
+	sleep $interval  # Execute body every `$interval` seconds.
+	tagcache_changed=$(find /var/lib/mpd/tag_cache -ctime $interval)
+	if [ -z "$tagcache_changed" ];
+	then
+		systemctl restart mpd
+	fi
+done
