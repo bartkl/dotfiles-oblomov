@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import shutil
 import sqlite3
 import os
 import time
@@ -7,10 +8,8 @@ import time
 starttime = time.time()
 
 LIB_ROOTPATH =  '/media/data/music/'
-#BEETS_DB_FILEPATH = os.path.join(os.environ['BEETSDIR'], 'library.db')
 BEETS_DB_FILEPATH = '/home/bart/.config/beets/library.db'
-#TAGCACHE_FILEPATH = os.path.join(os.environ['BEETSDIR'], 'mpd-tagcache')
-TAGCACHE_FILEPATH = '/home/bart/tag_cache'
+TAGCACHE_FILEPATH = '/var/lib/mpd/tag_cache'
 GENRE_DELIMITER = ','
 
 # Database connection
@@ -18,7 +17,8 @@ db_connection = sqlite3.connect(BEETS_DB_FILEPATH, detect_types=sqlite3.PARSE_CO
 cursor = db_connection.cursor()
 
 # Tagcache file initialisation
-tagcache_filehandle = open(TAGCACHE_FILEPATH, 'w')
+TAGCACHE_TEMPFILE = '/tmp/mpd_tagcache'
+tagcache_filehandle = open(TAGCACHE_TEMPFILE, 'w')
 
 # Fetch items from beets database
 cursor.execute('''
@@ -131,6 +131,7 @@ for (\
 cursor.close()
 db_connection.close()
 tagcache_filehandle.close()
+shutil.copyfile(TAGCACHE_TEMPFILE, TAGCACHE_FILEPATH)
 
 
 endtime = time.time()
