@@ -6,9 +6,11 @@ import time
 
 starttime = time.time()
 
-LIB_ROOTPATH =  '/volume1/music/repository/'
-BEETS_DB_FILEPATH = os.path.join(os.environ['BEETSDIR'], 'library.db')
-TAGCACHE_FILEPATH = os.path.join(os.environ['BEETSDIR'], 'mpd-tagcache')
+LIB_ROOTPATH =  '/media/data/music/'
+#BEETS_DB_FILEPATH = os.path.join(os.environ['BEETSDIR'], 'library.db')
+BEETS_DB_FILEPATH = '/home/bart/.config/beets/library.db'
+#TAGCACHE_FILEPATH = os.path.join(os.environ['BEETSDIR'], 'mpd-tagcache')
+TAGCACHE_FILEPATH = '/home/bart/tag_cache'
 GENRE_DELIMITER = ','
 
 # Database connection
@@ -85,11 +87,15 @@ for (\
     composer,\
     arranger\
 ) in cursor:
-    path = path.decode('utf-8')
+    if isinstance(path, bytes):
+        path = path.decode('utf-8')
     album_directory = os.path.dirname(path).split(LIB_ROOTPATH)[1]
 
     # Genre can comma separated multi-valued, so rename it to avoid confusion
-    genres = genre.split(GENRE_DELIMITER)
+    if genre:
+        genres = genre.split(GENRE_DELIMITER)
+    else:
+        genres = ''
 
     # If album changed, close the previous block
     if album_directory != last_processed_album_directory and last_processed_album_directory is not None:
