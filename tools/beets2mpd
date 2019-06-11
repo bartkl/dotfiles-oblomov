@@ -8,7 +8,7 @@ import time
 starttime = time.time()
 
 LIB_ROOTPATH =  '/media/data/music/'
-BEETS_DB_FILEPATH = '/home/bart/.config/beets/library.db'
+BEETS_DB_FILEPATH = '/media/data/libraries/music/library.db'
 TAGCACHE_FILEPATH = '/var/lib/mpd/tag_cache'
 GENRE_DELIMITER = ','
 

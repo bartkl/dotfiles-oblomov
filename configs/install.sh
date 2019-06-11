@@ -12,7 +12,8 @@ ln -s $SCRIPTDIR/mpd/update-mpd.service        /etc/systemd/system/
 ln -s $SCRIPTDIR/system/sshd_config            /etc/ssh/
 
 # user
-runuser -l bart "-c ln -s $SCRIPTDIR/zsh/.zshrc        ~/.zshrc"
-runuser -l bart "-c ln -s $SCRIPTDIR/tmux/.tmux.conf   ~/.tmux.conf"
-runuser -l bart "-c ln -s $SCRIPTDIR/vim/.vimrc        ~/.vimrc"
-runuser -l bart "-c ln -s $SCRIPTDIR/vim/.vim          ~/.vim"
+runuser -l bart "-c ln -s $SCRIPTDIR/zsh/.zshrc          ~/.zshrc"
+runuser -l bart "-c ln -s $SCRIPTDIR/tmux/.tmux.conf     ~/.tmux.conf"
+runuser -l bart "-c ln -s $SCRIPTDIR/vim/.vimrc          ~/.vimrc"
+runuser -l bart "-c ln -s $SCRIPTDIR/vim/.vim            ~/.vim"
+runuser -l bart "-c ln -s $SCRIPTDIR/beets/config.yaml   ~/.config/beets/"

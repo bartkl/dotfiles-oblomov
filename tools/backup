@@ -20,7 +20,7 @@ base_opts="--log-file=$log_filepath\
            --archive\
            --update\
            --delete"
-targets=(ALL books films music other series shows media) # Note that with this way of defining an array, spaces cannot be used in target names.
+targets=(ALL books films music other series shows libraries media) # Note that with this way of defining an array, spaces cannot be used in target names.
 date_format='+%Y/%m/%d %H:%M'
 
 
@@ -47,7 +47,10 @@ backup_target() {
     elif [[ "$target" == series?(/) ]]
     then
         opts="$base_opts --partial"
-    elif [[ "$target" == shows?(/) ]]
+    elif [[ "$target" == libraries?(/) ]]
+    then
+        opts="$base_opts --whole-file"
+    elif [[ "$target" == libraries?(/) ]]
     then
         opts="$base_opts --partial"
     else
