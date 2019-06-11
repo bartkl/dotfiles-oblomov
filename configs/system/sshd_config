@@ -121,3 +121,10 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 #	AllowTcpForwarding no
 #	PermitTTY no
 #	ForceCommand cvs server
+
+Match Group sftp-only
+	ChrootDirectory /media/data/  # `sshd' will change cwd to homedir of user, which should also be relative to the chroot!
+	X11Forwarding no
+	AllowTcpForwarding no
+	ForceCommand internal-sftp
+	PasswordAuthentication yes
