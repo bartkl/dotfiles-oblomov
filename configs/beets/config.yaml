@@ -1,0 +1,43 @@
+original_date: yes
+per_disc_numbering: no
+va_name: "\U0001F465 Various Artists"
+
+import:
+    write: no
+    copy: no
+    move: no
+    link: no
+
+    resume: ask
+    incremental: yes
+    quiet_fallback: skip
+    none_rec_action: ask
+    timid: yes
+    default_action: apply
+    log: /var/log/beets/import.log
+    languages:
+        - en
+    detail: no
+    group_albums: no
+    autotag: yes
+    duplicate_action: ask
+    set_fields:
+        genre: "\U0001F3A7 To Listen"
+
+plugins: edit types fetchart
+
+types:
+    rating: int
+
+edit:
+    itemfields: track artist title
+    albumfields: albumartist album genre rating
+
+wlg:
+    count: 4
+    separator: ','
+    auto: no
+    force: no
+
+fetchart:
+    auto: yes
