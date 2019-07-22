@@ -9,7 +9,7 @@ starttime = time.time()
 
 LIB_ROOTPATH =  '/media/data/music/'
 BEETS_DB_FILEPATH = '/media/data/libraries/music/library.db'
-TAGCACHE_FILEPATH = '/var/lib/mpd/tag_cache'
+TAGCACHE_FILEPATH = '/media/data/libraries/music/tag_cache'
 GENRE_DELIMITER = ','
 
 # Database connection
