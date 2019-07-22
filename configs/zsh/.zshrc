@@ -106,4 +106,4 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Aliases
-alias unseen='diff <(cat ~/films-hidden.txt ~/films-seen.txt|sort) <(l --color=never) | grep -oP "(?<=^> ).*" | grep -v ^\@eaDir | grep -v "\.\(zip\|srt\)$"'
+alias unseen='diff <(cat ~/films-hidden.txt ~/films-seen.txt|sort) <(ls -1 --color=never) | grep -oP "(?<=^> ).*" | grep -v ^\@eaDir | grep -v "\.\(zip\|srt\)$"'
