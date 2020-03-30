@@ -132,6 +132,7 @@ cursor.close()
 db_connection.close()
 tagcache_filehandle.close()
 shutil.copyfile(TAGCACHE_TEMPFILE, TAGCACHE_FILEPATH)
+os.unlink(TAGCACHE_TEMPFILE)
 
 
 endtime = time.time()
