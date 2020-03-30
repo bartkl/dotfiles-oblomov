@@ -21,7 +21,7 @@ done
 IFS=$originalIFS
 
 quit_manually=$(grep -o 'Keyboard: character q (0x71)' -c omxplayer.log)
-if [ $quit_manually == "1" ] && [[ $filepath == /media/*/films/* ]]
+if [ $quit_manually == "0" ] && [[ $filepath == /media/*/films/* ]]
 then
     film_in_seen_list=$(grep -o "$filepath" -c $seen_list)
     if [ $film_in_seen_list == "0" ]

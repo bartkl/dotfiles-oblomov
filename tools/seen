@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+import sys
+from pathlib import Path
+
+
+
+SEEN_LIST = Path.home / 'films_seen.txt'
+
+
+def find_film_paths_in_histories():
+    # TODO: Fetch last found path in histories of zsh/bash.
+   pass
+
+
+def add_film_to_seen_list(film_path):
+    if not film_in_seen_list(film_path):
+        pass
+
+
+def film_in_seen_list(film_path):
+    with open(SEEN_LIST, 'r') as f:
+        for path in f.readline():
+            if film_path == 
+
+
+
+
+if __name__ == '__main__':
+    paths = [Path(p).resolve() for p in sys.argv[1:]]
+    if not paths:
+        paths = find_film_paths_in_histories()
+
+    for film_path in paths:
+        add_film_to_seen_list(film_path)
+        
