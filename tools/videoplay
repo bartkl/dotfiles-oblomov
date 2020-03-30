@@ -1,5 +1,7 @@
 #!/bin/bash
 
+seen_list=~bart/films_seen.txt
+
 # If not connected to terminal, then assumed piped stdin.
 if ! [ -t 0 ]
 then
@@ -8,12 +10,38 @@ fi
 
 originalIFS=$IFS
 IFS=$'\n'
-for file in $filenamesfromstdin $@;  # First process stdin, then commandline arguments.
+for file in $filenamesfromstdin $@  # First process stdin, then commandline arguments.
 do
     tty=/dev/$(ps hotty $PPID)  # Get TTY of parent process.
     filepath=$(realpath $file)
-    echo -en "\033[1mPlaying\033[m: $filepath\n"
-    omxplayer -r -o hdmi "$file" < $tty  # Use parent TTY as stdin to maintain keyboard control.
-    echo -en "\n\n"
+    echo -en "\033[1mPlaying\033[m: $filepath\n\n"
+    omxplayer -r -o hdmi -g "$file" < $tty  # Use parent TTY as stdin to maintain keyboard control.
+    echo -en "\n"
 done
 IFS=$originalIFS
+
+quit_manually=$(grep -o 'Keyboard: character q (0x71)' -c omxplayer.log)
+if [ $quit_manually == "1" ] && [[ $filepath == /media/*/films/* ]]
+then
+    film_in_seen_list=$(grep -o "$filepath" -c $seen_list)
+    if [ $film_in_seen_list == "0" ]
+    then
+        echo "Register film as seen?"
+        read answer
+
+        if [ $answer == "y" ]
+        then
+            echo "$filepath" >> $seen_list
+            echo Added film to $seen_list.
+        fi
+    fi
+fi
+
+for log_file in omxplayer.log omxplayer.log.old
+do
+    if [ -f $log_file ]
+    then
+        rm $log_file
+    fi
+done
+
