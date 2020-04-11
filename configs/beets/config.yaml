@@ -1,4 +1,5 @@
 library: /media/data/libraries/music/library.db
+directory: /media/data/libraries/music
 original_date: yes
 per_disc_numbering: no
 va_name: "\U0001F465 Various Artists"
@@ -7,7 +8,7 @@ import:
     write: no
     copy: no
     move: no
-    link: no
+    link: yes
 
     resume: ask
     incremental: yes
@@ -25,7 +26,7 @@ import:
     set_fields:
         genre: "\U0001F3A7 To Listen"
 
-plugins: edit types fetchart
+plugins: edit types fetchart bucket
 
 types:
     rating: int
@@ -34,11 +35,12 @@ edit:
     itemfields: track artist title
     albumfields: albumartist album genre rating
 
-wlg:
-    count: 4
-    separator: ','
-    auto: no
-    force: no
-
 fetchart:
     auto: yes
+
+bucket:
+    bucket_year: ['1930s', '1940s', '1950s', '1960s', '1970s', '1980s', '1990s', '2000s', '2010s', '2020s']
+
+paths:
+    default: %bucket{$year}/$year - $albumartist - $album/$track - $title
+    comp: %bucket{$year}/$year - $albumartist - $album/$track - $artist - $title
