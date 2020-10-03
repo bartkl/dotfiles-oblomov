@@ -1,0 +1,13 @@
+[Unit]
+Description=MPDroid album art, served using Beets and Gunicorn.
+After=network.target
+
+[Service]
+User=bart
+Group=www-data
+WorkingDirectory=/opt/mpdroid-album-art
+Environment=BEETSDIR=/media/droppie/libraries/music/.config/beets
+ExecStart=/usr/local/bin/gunicorn --bind 0.0.0.0:6667 --log-level=DEBUG main:app
+
+[Install]
+WantedBy=multi-user.target
