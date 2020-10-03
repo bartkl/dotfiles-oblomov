@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+
+import os
+import sqlite3
+import sys
+
+
+MUSIC_DATA_DIR = '/media/droppie/data/music'
+BEETS_DB_FILEPATH = '/media/droppie/libraries/music/.config/beets/library.db'
+IGNORE_FILE = '/media/droppie/libraries/music/.config/ignored_data'
+
+
+def list_albums_beets():
+    beets_conn = sqlite3.connect(BEETS_DB_FILEPATH)
+    beets_cursor = beets_conn.cursor()
+
+    beets_cursor.execute('''
+        select path from items
+
+        where track = 1
+        
+        order by path asc
+    ''')
+
+    return [
+        os.path.dirname(os.path.realpath(path.decode('utf-8')))
+        for (path,) in beets_cursor]
+
+
+def list_albums_data_dir():
+    return [
+        d.path 
+        for d in sorted(os.scandir(MUSIC_DATA_DIR),
+                        key=lambda d: d.name)
+        if d.is_dir()]
+
+
+def list_ignored():
+    with open(IGNORE_FILE) as f:
+        return sorted(line.rstrip(os.linesep)
+                      for line in f.readlines())
+
+
+def add_ignore(path):
+    with open(IGNORE_FILE, mode='a') as f:
+        f.write(os.path.abspath(path) + os.linesep)
+
+
+def list_unimported_albums(in_beets, in_data_dir, ignored):
+    diff = [d for d in in_data_dir
+            if d not in in_beets
+            if d not in ignored]
+
+    return diff
+
+
+
+if __name__ == '__main__':
+    albums_beets = list_albums_beets()
+    albums_data_dir = list_albums_data_dir()
+    ignore_albums = list_ignored()
+    diff = list_unimported_albums(albums_beets, albums_data_dir, ignore_albums)
+
+    if len(sys.argv) > 1:
+        try:
+            if sys.argv[1] == 'ignore':
+                add_ignore(sys.argv[2])
+                exit()
+            elif sys.argv[1] == 'stats':
+                print(f"Total: {len(albums_data_dir)}")
+                print(f"Ignored: {len(ignore_albums)}")
+                print(f"Unimported: {len(diff)}")
+                print(f"Unimported (%): {100 * (float(len(diff)) / len(albums_data_dir)):.2f}")
+                exit()
+        except IndexError:
+            exit('Please provide an album to ignore.')
+
+    for d in diff:
+        if os.getcwd() == MUSIC_DATA_DIR:
+            print(os.path.relpath(d, start=MUSIC_DATA_DIR))
+        else:
+            print(d)
+

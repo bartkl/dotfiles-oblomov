@@ -38,7 +38,7 @@ fi
 playcount=$1
 shift
 
-cd /media/data/libraries/shows
+cd /media/droppie/data/shows
 
 
 shows=()

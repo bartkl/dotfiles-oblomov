@@ -10,17 +10,17 @@
 ### Configuration
 export RSYNC_PARTIAL_DIR=.rsync_partial
 
-log_filepath=/var/log/rsync.log
-host=192.168.178.23
-src_basepath=/media/data
-dest_basepath=/volume1
+log_filepath=/var/log/backup.log
+host=192.168.178.69
+src_basepath=/media/droppie
+dest_basepath=/media/droppie
 base_opts="--log-file=$log_filepath\
            --itemize-changes\
            --verbose\
            --archive\
            --update\
            --delete"
-targets=(ALL books films music other series shows libraries media) # Note that with this way of defining an array, spaces cannot be used in target names.
+targets=(ALL books films music series shows libraries personal)  # Note that with this way of defining an array, spaces cannot be used in target names.
 date_format='+%Y/%m/%d %H:%M'
 
 
@@ -32,27 +32,29 @@ backup_target() {
     if   [[ "$target" == books?(/) ]]
     then
         opts="$base_opts --whole-file"
+        target=data/$target
     elif [[ "$target" == films?(/) ]]
     then
         opts="$base_opts --partial"
+        target=data/$target
     elif [[ "$target" == music?(/) ]]
     then
         opts="$base_opts --whole-file"
-    elif [[ "$target" == other?(/) ]]
-    then
-        opts="$base_opts --whole-file"
-    elif [[ "$target" == media?(/) ]]
-    then
-        opts="$base_opts --whole-file"
+        target=data/$target
     elif [[ "$target" == series?(/) ]]
     then
         opts="$base_opts --partial"
+        target=data/$target
+    elif [[ "$target" == shows?(/) ]]
+    then
+        opts="$base_opts --partial"
+        target=data/$target
     elif [[ "$target" == libraries?(/) ]]
     then
         opts="$base_opts --whole-file"
-    elif [[ "$target" == libraries?(/) ]]
+    elif [[ "$target" == personal?(/) ]]
     then
-        opts="$base_opts --partial"
+        opts="$base_opts --whole-file"
     else
         echo "[`date "$date_format"`] ERROR: Unknown target name was specified." >> $log_filepath
         exit 1

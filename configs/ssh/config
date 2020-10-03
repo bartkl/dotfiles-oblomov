@@ -4,3 +4,10 @@ Host github.com
     Port 22
     AddKeysToAgent yes
     IdentityFile ~/.ssh/github_rsa
+
+Host terminus
+    HostName 192.168.178.69
+    Port 22
+    User bart
+    AddKeysToAgent yes
+    IdentityFile ~/.ssh/id_rsa

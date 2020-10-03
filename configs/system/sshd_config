@@ -113,7 +113,7 @@ PrintMotd no
 AcceptEnv LANG LC_*
 
 # override default of no subsystems
-Subsystem	sftp	/usr/lib/openssh/sftp-server
+#Subsystem	sftp	/usr/lib/openssh/sftp-server
 
 # Example of overriding settings on a per-user basis
 #Match User anoncvs
@@ -122,9 +122,9 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 #	PermitTTY no
 #	ForceCommand cvs server
 
-Match Group sftp-only
-	ChrootDirectory /media/data/  # `sshd' will change cwd to homedir of user, which should also be relative to the chroot!
-	X11Forwarding no
-	AllowTcpForwarding no
-	ForceCommand internal-sftp
-	PasswordAuthentication yes
+# Match Group sftp-only
+# 	ChrootDirectory /media/data/  # `sshd' will change cwd to homedir of user, which should also be relative to the chroot!
+# 	X11Forwarding no
+# 	AllowTcpForwarding no
+# 	ForceCommand internal-sftp
+# 	PasswordAuthentication yes

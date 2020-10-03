@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+
+import shlex
+import subprocess
+import sys
+from configparser import ConfigParser
+from pathlib import Path
+
+
+LIBRARY_DIR = Path('/') / 'media' / 'droppie' / 'libraries'
+SHOWS_DIR = LIBRARY_DIR / 'shows'
+RECIPES_DIR = SHOWS_DIR / '☺🍔  ０𝕣𝔢ℂᶤ𝕡ＥŞ  😺👍'
+
+
+def exit(retcode, msg=None):
+    if msg:
+        print(msg)
+    sys.exit(retcode)
+
+
+def run_omxplayer(filepath):
+    print(f'Playing {filepath}...')
+    status = subprocess.run(['omxplayer', '-b', '-r', str(filepath)])
+    print(f'Ended playback with return code {status.returncode}.')
+
+    return status.returncode
+
+
+def get_episodes(show, start=1, end=None):
+    for i, ep in enumerate(sorted((SHOWS_DIR / show / 'All').iterdir()), 1):
+        if i < start:
+            continue
+        if end is not None and i > end:
+            raise StopIteration
+
+        yield ep
+
+
+def run_full_series(show, recipe, recipe_filepath):
+    last_played = int(recipe['recipe']['last_played'])
+    all_episodes = get_episodes(show, start=last_played+1)
+
+    for i, ep in enumerate(all_episodes, last_played+1):
+        ret_code = run_omxplayer(ep)
+        if ret_code == 0:
+            with open(recipe_filepath, mode='w') as f:
+                print(f'Updating last played to {i}.')
+                recipe.set('recipe', 'last_played', str(i))
+                recipe.write(f)
+        elif ret_code == 3:
+            exit(0)
+    exit(0)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 4:
+        exit(1, 'No files were provided.')
+
+    filepath = Path(sys.argv[3])
+    if filepath.suffix == '.recipe':
+        recipe = ConfigParser()
+        recipe.read(filepath)
+
+        show = recipe['recipe']['show']
+        recipe_type = recipe['recipe']['type']
+
+        if recipe_type == 'full-series':
+            run_full_series(show, recipe, filepath)
+
+    else:
+        run_omxplayer(filepath)
+        exit(0)

@@ -2,7 +2,6 @@
 
 LOGFILE=/var/log/transmission-completion-handler.log  # Currently not in use.
 
-if [[ "$TR_TORRENT_DIR" == "/media/new-data/music" ]]; then
+if [[ "$TR_TORRENT_DIR" == "/media/droppie/data/music" ]]; then
     BEETSDIR=/home/bart/.dotfiles/configs/beets beet -v import "${TR_TORRENT_DIR}/${TR_TORRENT_NAME}"
-    beets2mpd
 fi

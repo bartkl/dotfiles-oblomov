@@ -1,7 +1,7 @@
 proc            /proc           proc    defaults          0       0
-PARTUUID=e5949927-01  /boot           vfat    defaults          0       2
-PARTUUID=e5949927-02  /               ext4    defaults,noatime  0       1
+PARTUUID=738a4d67-01  /boot           vfat    defaults          0       2
+PARTUUID=738a4d67-02  /               ext4    defaults,noatime  0       1
 # a swapfile is not a swap partition, no line here
 #   use  dphys-swapfile swap[on|off]  for that
-UUID="a72dd9ed-81b5-44e0-a35f-72ab0e6fbda5"	/media/new-data	ext4	defaults,noatime	0	2
-UUID="1dc18846-d9a8-4046-a2e2-22d368f918f2"	/media/data	ext4	defaults,noatime	0	2
+UUID="a72dd9ed-81b5-44e0-a35f-72ab0e6fbda5"	/media/droppie	ext4	defaults,noatime	0	2
+# UUID="53cf9812-5afa-458d-aa2f-f39532f12ae4"	/media/backup	ext4	defaults,noatime	0	2

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-seen_list=~bart/films_seen.txt
+seen_list=/media/droppie/data/films/.seen.txt
 
 # If not connected to terminal, then assumed piped stdin.
 if ! [ -t 0 ]
