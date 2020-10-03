@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import shlex
 import subprocess
 import sys
@@ -10,13 +9,17 @@ from pathlib import Path
 
 LIBRARY_DIR = Path('/') / 'media' / 'droppie' / 'libraries'
 SHOWS_DIR = LIBRARY_DIR / 'shows'
-RECIPES_DIR = SHOWS_DIR / '☺🍔  ０𝕣𝔢ℂᶤ𝕡ＥŞ  😺👍'
+SERIES_DIR = LIBRARY_DIR / 'series'
 
 
 def exit(retcode, msg=None):
     if msg:
         print(msg)
     sys.exit(retcode)
+
+
+def is_subdir(a, b):
+    return str(a.resolve()).startswith(str(b))
 
 
 def run_omxplayer(filepath):
@@ -27,8 +30,8 @@ def run_omxplayer(filepath):
     return status.returncode
 
 
-def get_episodes(show, start=1, end=None):
-    for i, ep in enumerate(sorted((SHOWS_DIR / show / 'All').iterdir()), 1):
+def get_episodes(base_dir, show, start=1, end=None):
+    for i, ep in enumerate(sorted((base_dir / show / 'All').iterdir()), 1):
         if i < start:
             continue
         if end is not None and i > end:
@@ -37,9 +40,9 @@ def get_episodes(show, start=1, end=None):
         yield ep
 
 
-def run_full_series(show, recipe, recipe_filepath):
+def run_full_series(base_dir, show, recipe, recipe_filepath):
     last_played = int(recipe['recipe']['last_played'])
-    all_episodes = get_episodes(show, start=last_played+1)
+    all_episodes = get_episodes(base_dir, show, start=last_played+1)
 
     for i, ep in enumerate(all_episodes, last_played+1):
         ret_code = run_omxplayer(ep)
@@ -62,11 +65,16 @@ if __name__ == '__main__':
         recipe = ConfigParser()
         recipe.read(filepath)
 
-        show = recipe['recipe']['show']
+        if is_subdir(filepath, SERIES_DIR):
+            base_dir = SERIES_DIR
+        elif is_subdir(filepath, SHOWS_DIR):
+            base_dir = SHOWS_DIR
+
+        show = recipe['recipe']['series']
         recipe_type = recipe['recipe']['type']
 
         if recipe_type == 'full-series':
-            run_full_series(show, recipe, filepath)
+            run_full_series(base_dir, show, recipe, filepath)
 
     else:
         run_omxplayer(filepath)
