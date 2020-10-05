@@ -55,7 +55,7 @@
     "rpc-whitelist": "127.0.0.1,192.168.178.*",
     "rpc-whitelist-enabled": true,
     "scrape-paused-torrents-enabled": true,
-    "script-torrent-done-enabled": true,
+    "script-torrent-done-enabled": false,
     "script-torrent-done-filename": "/usr/local/bin/transmission-completion-handler",
     "seed-queue-enabled": false,
     "seed-queue-size": 10,
